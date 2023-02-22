@@ -582,7 +582,7 @@ bool CApplication::CreateGUI()
 
   for (auto& windowSystem : windowSystems)
   {
-    CLog::Log(LOGDEBUG, "CApplication::{} - trying to init {} windowing system", __FUNCTION__,
+    CLog::Log(LOGERROR, "CApplication::{} - trying to init {} windowing system", __FUNCTION__,
               windowSystem);
     m_pWinSystem = KODI::WINDOWING::CWindowSystemFactory::CreateWindowSystem(windowSystem);
 
@@ -596,7 +596,7 @@ bool CApplication::CreateGUI()
 
     if (!m_pWinSystem->InitWindowSystem())
     {
-      CLog::Log(LOGDEBUG, "CApplication::{} - unable to init {} windowing system", __FUNCTION__,
+      CLog::Log(LOGERROR, "CApplication::{} - unable to init {} windowing system", __FUNCTION__,
                 windowSystem);
       m_pWinSystem->DestroyWindowSystem();
       m_pWinSystem.reset();
@@ -605,7 +605,7 @@ bool CApplication::CreateGUI()
     }
     else
     {
-      CLog::Log(LOGINFO, "CApplication::{} - using the {} windowing system", __FUNCTION__,
+      CLog::Log(LOGERROR, "CApplication::{} - using the {} windowing system", __FUNCTION__,
                 windowSystem);
       break;
     }
@@ -651,6 +651,7 @@ bool CApplication::CreateGUI()
   }
   if (!InitWindow())
   {
+    CLog::Log(LOGERROR, "InitWindow failed");
     return false;
   }
 

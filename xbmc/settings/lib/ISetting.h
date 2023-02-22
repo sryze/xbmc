@@ -9,8 +9,10 @@
 #pragma once
 
 #include "SettingRequirement.h"
+#include "utils/log.h"
 
 #include <string>
+#include <iostream>
 
 class CSettingsManager;
 class TiXmlNode;
@@ -61,7 +63,10 @@ public:
 
    \param visible Whether the setting object shall be visible or not
    */
-  virtual void SetVisible(bool visible) { m_visible = visible; }
+  virtual void SetVisible(bool visible) {
+    // CLog::Log(LOGERROR, "Setting::SetVisible: {} {}", m_id, visible);
+    m_visible = visible;
+  }
    /*!
    \brief Gets the localizeable label ID of the setting group.
 
@@ -101,7 +106,11 @@ public:
 
    \param visible Whether the setting object meets all necessary requirements or not
    */
-  virtual void SetRequirementsMet(bool requirementsMet) { m_meetsRequirements = requirementsMet; }
+  virtual void SetRequirementsMet(bool requirementsMet) {
+    std::cout << "Setting::SetRequirementsMet: " << m_id << " = " << requirementsMet << std::endl;
+    CLog::Log(LOGERROR, "Setting::SetRequirementsMet: {} {}", m_id, requirementsMet);
+    m_meetsRequirements = requirementsMet;
+  }
 
   /*!
    \brief Deserializes the given XML node to retrieve a setting object's

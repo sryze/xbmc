@@ -91,18 +91,25 @@ CDVDVideoCodec* CDVDVideoCodecDRMPRIME::Create(CProcessInfo& processInfo)
   if (CServiceBroker::GetSettingsComponent()->GetSettings()->GetBool(
           CSettings::SETTING_VIDEOPLAYER_USEPRIMEDECODER))
     return new CDVDVideoCodecDRMPRIME(processInfo);
+  CLog::Log(LOGERROR, "SETTING_VIDEOPLAYER_USEPRIMEDECODER is false | {}", __FUNCTION__);
   return nullptr;
 }
 
 void CDVDVideoCodecDRMPRIME::Register()
 {
+  CLog::Log(LOGERROR, "CDVDVideoCodecDRMPRIME::Register: start");
+
   auto settingsComponent = CServiceBroker::GetSettingsComponent();
-  if (!settingsComponent)
+  if (!settingsComponent) {
+    CLog::Log(LOGERROR, "CDVDVideoCodecDRMPRIME::Register: settingsComponent is null");
     return;
+  }
 
   auto settings = settingsComponent->GetSettings();
-  if (!settings)
+  if (!settings) {
+    CLog::Log(LOGERROR, "CDVDVideoCodecDRMPRIME::Register: settings is null");
     return;
+  }
 
   auto setting = settings->GetSetting(CSettings::SETTING_VIDEOPLAYER_USEPRIMEDECODER);
   if (!setting)
@@ -123,6 +130,8 @@ void CDVDVideoCodecDRMPRIME::Register()
 
   setting->SetVisible(true);
 
+  CLog::Log(LOGERROR, "Registering drm_prime");
+
   CDVDFactoryCodec::RegisterHWVideoCodec("drm_prime", CDVDVideoCodecDRMPRIME::Create);
 }
 
@@ -130,6 +139,7 @@ static bool IsSupportedHwFormat(const enum AVPixelFormat fmt)
 {
   bool hw = CServiceBroker::GetSettingsComponent()->GetSettings()->GetBool(
       SETTING_VIDEOPLAYER_USEPRIMEDECODERFORHW);
+  CLog::Log(LOGERROR, "SETTING_VIDEOPLAYER_USEPRIMEDECODER = {} | {}", hw, __FUNCTION__);
 
   return fmt == AV_PIX_FMT_DRM_PRIME && hw;
 }
@@ -142,8 +152,10 @@ static bool IsSupportedSwFormat(const enum AVPixelFormat fmt)
 static const AVCodecHWConfig* FindHWConfig(const AVCodec* codec)
 {
   if (!CServiceBroker::GetSettingsComponent()->GetSettings()->GetBool(
-          SETTING_VIDEOPLAYER_USEPRIMEDECODERFORHW))
+          SETTING_VIDEOPLAYER_USEPRIMEDECODERFORHW)) {
+    CLog::Log(LOGERROR, "SETTING_VIDEOPLAYER_USEPRIMEDECODER is false | {}", __FUNCTION__);
     return nullptr;
+  }
 
   const AVCodecHWConfig* config = nullptr;
   for (int n = 0; (config = avcodec_get_hw_config(codec, n)); n++)

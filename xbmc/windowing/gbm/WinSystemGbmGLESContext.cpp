@@ -49,6 +49,8 @@ std::unique_ptr<CWinSystemBase> CWinSystemGbmGLESContext::CreateWinSystem()
 
 bool CWinSystemGbmGLESContext::InitWindowSystem()
 {
+  CLog::Log(LOGERROR, "CWinSystemGbmGLESContext::InitWindowSystem: start");
+
   VIDEOPLAYER::CRendererFactory::ClearRenderer();
   CDVDFactoryCodec::ClearHWAccels();
   CLinuxRendererGLES::Register();
@@ -58,6 +60,7 @@ bool CWinSystemGbmGLESContext::InitWindowSystem()
 
   if (!CWinSystemGbmEGLContext::InitWindowSystemEGL(EGL_OPENGL_ES2_BIT, EGL_OPENGL_ES_API))
   {
+    CLog::Log(LOGERROR, "CWinSystemGbmGLESContext::InitWindowSystem: failed to initialize");
     return false;
   }
 
@@ -69,6 +72,7 @@ bool CWinSystemGbmGLESContext::InitWindowSystem()
   if (general)
   {
     GBM::VAAPIRegister(m_vaapiProxy.get(), deepColor);
+    CLog::Log(LOGERROR, "CWinSystemGbmGLESContext::InitWindowSystem: registered VAAPI");
   }
 
   CRendererDRMPRIMEGLES::Register();

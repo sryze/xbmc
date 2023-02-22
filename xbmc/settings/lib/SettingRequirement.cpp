@@ -12,10 +12,13 @@
 
 bool CSettingRequirementCondition::Check() const
 {
-  if (m_settingsManager == nullptr)
+  if (m_settingsManager == nullptr) {
+    std::cout << "CSettingRequirementCondition::Check: settingsManager is null" << std::endl;
     return false;
+  }
 
   bool found = m_settingsManager->GetConditions().Check("IsDefined", m_value);
+  std::cout << "CSettingRequirementCondition::Check: " << m_value << " found? " << found << std::endl;
   if (m_negated)
     return !found;
 

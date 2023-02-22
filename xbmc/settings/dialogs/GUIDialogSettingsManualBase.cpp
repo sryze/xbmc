@@ -133,6 +133,8 @@ std::shared_ptr<CSettingBool> CGUIDialogSettingsManualBase::AddToggle(const Sett
   setting->SetControl(GetCheckmarkControl(delayed));
   setSettingDetails(setting, level, visible, help);
 
+  CLog::Log(LOGERROR, "CGUIDialogSettingsManualBase::AddToggle {} {}", label, value);
+
   group->AddSetting(setting);
   return setting;
 }

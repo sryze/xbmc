@@ -18,18 +18,23 @@ using namespace KODI::WINDOWING::LINUX;
 
 bool CWinSystemGbmEGLContext::InitWindowSystemEGL(EGLint renderableType, EGLint apiType)
 {
+  CLog::Log(LOGERROR, "CWinSystemGbmEGLContext::InitWindowSystemEGL: start");
+
   if (!CWinSystemGbm::InitWindowSystem())
   {
+    CLog::Log(LOGERROR, "CWinSystemGbmEGLContext::InitWindowSystemEGL: InitWindowSystem failed");
     return false;
   }
 
   if (!m_eglContext.CreatePlatformDisplay(m_GBM->GetDevice()->Get(), m_GBM->GetDevice()->Get()))
   {
+    CLog::Log(LOGERROR, "CWinSystemGbmEGLContext::InitWindowSystemEGL: CreatePlatformDisplay failed");
     return false;
   }
 
   if (!m_eglContext.InitializeDisplay(apiType))
   {
+    CLog::Log(LOGERROR, "CWinSystemGbmEGLContext::InitWindowSystemEGL: InitializeDisplay failed");
     return false;
   }
 
@@ -38,14 +43,18 @@ bool CWinSystemGbmEGLContext::InitWindowSystemEGL(EGLint renderableType, EGLint 
 
   // prefer alpha visual id, fallback to non-alpha visual id
   if (!m_eglContext.ChooseConfig(renderableType, CDRMUtils::FourCCWithAlpha(visualId)) &&
-      !m_eglContext.ChooseConfig(renderableType, CDRMUtils::FourCCWithoutAlpha(visualId)))
-    return false;
-
-  if (!CreateContext())
-  {
+      !m_eglContext.ChooseConfig(renderableType, CDRMUtils::FourCCWithoutAlpha(visualId))) {
+      CLog::Log(LOGERROR, "CWinSystemGbmEGLContext::InitWindowSystemEGL: ChooseConfig failed");
     return false;
   }
 
+  if (!CreateContext())
+  {
+    CLog::Log(LOGERROR, "CWinSystemGbmEGLContext::InitWindowSystemEGL: CreateContext failed");
+    return false;
+  }
+
+  CLog::Log(LOGERROR, "CWinSystemGbmEGLContext::InitWindowSystemEGL: SUCCESS!!!");
   return true;
 }
 

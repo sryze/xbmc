@@ -18,6 +18,7 @@
 
 #include <sstream>
 #include <utility>
+#include <csignal>
 
 template<typename TKey, typename TValue>
 bool CheckSettingOptionsValidity(const TValue& value, const std::vector<std::pair<TKey, TValue>>& options)
@@ -723,6 +724,12 @@ bool CSettingBool::CheckValidity(const std::string &value) const
 bool CSettingBool::SetValue(bool value)
 {
   CExclusiveLock lock(m_critical);
+
+  CLog::Log(LOGERROR, "CSettingBool::SetValue: {} = {}", m_id, value);
+
+  if (m_id == "videoplayer.useprimedecoder" && !value) {
+    raise(SIGTRAP);
+  }
 
   if (value == m_value)
     return true;

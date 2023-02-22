@@ -12,6 +12,7 @@
 #include "SettingsManager.h"
 #include "utils/StringUtils.h"
 #include "utils/XBMCTinyXML.h"
+#include "utils/log.h"
 
 bool CSettingConditionItem::Deserialize(const TiXmlNode *node)
 {
@@ -102,6 +103,8 @@ void CSettingConditionsManager::AddCondition(std::string condition)
   StringUtils::ToLower(condition);
 
   m_defines.insert(condition);
+
+  CLog::Log(LOGERROR, "Added define: {}", condition);
 }
 
 void CSettingConditionsManager::AddDynamicCondition(std::string identifier, SettingConditionCheck condition, void *data /*= nullptr*/)
@@ -131,6 +134,8 @@ bool CSettingConditionsManager::Check(
     const std::string& value /* = "" */,
     const std::shared_ptr<const CSetting>& setting /* = nullptr */) const
 {
+  CLog::Log(LOGERROR, "Checking condition: {} {}", condition, condition);
+
   if (condition.empty())
     return false;
 
@@ -142,7 +147,10 @@ bool CSettingConditionsManager::Check(
     std::string tmpValue = value;
     StringUtils::ToLower(tmpValue);
 
-    return m_defines.find(tmpValue) != m_defines.end();
+    bool isDefined = m_defines.find(tmpValue) != m_defines.end();
+    std::cout << "Is defined? " << tmpValue << " " << value << " " << isDefined << std::endl;
+    CLog::Log(LOGERROR, "IS DEFINED? {}", isDefined);
+    return isDefined;
   }
 
   auto conditionIt = m_conditions.find(condition);

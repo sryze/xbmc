@@ -66,4 +66,6 @@ bool ISetting::DeserializeIdentification(const TiXmlNode *node, std::string &ide
 void ISetting::CheckRequirements()
 {
   m_meetsRequirements = m_requirementCondition.Check();
+  std::cout << "ISetting::CheckRequirements: " << m_id << " = " << m_meetsRequirements << std::endl;
+  CLog::Log(LOGERROR, "ISetting::CheckRequirements: {} {}", m_id, m_meetsRequirements);
 }

@@ -592,6 +592,7 @@ std::set<std::string> CGUIDialogSettingsBase::CreateSettings()
       std::shared_ptr<CSetting> pSetting = *settingIt;
       settingMap.insert(pSetting->GetId());
       AddSetting(pSetting, group->GetWidth(), iControlID);
+      CLog::Log(LOGERROR, "Added setting: {} = {}", pSetting->GetId(), pSetting->ToString());
     }
   }
 

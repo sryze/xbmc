@@ -582,10 +582,14 @@ bool CSettingsManager::GetBool(const std::string &id) const
 {
   CSharedLock lock(m_settingsCritical);
   SettingPtr setting = GetSetting(id);
-  if (setting == nullptr || setting->GetType() != SettingType::Boolean)
+  if (setting == nullptr || setting->GetType() != SettingType::Boolean) {
+    // CLog::Log(LOGERROR, "CSettingsManager::GetBool({}) = false because it's null or not bool", id);
     return false;
+  }
 
-  return std::static_pointer_cast<CSettingBool>(setting)->GetValue();
+  auto result = std::static_pointer_cast<CSettingBool>(setting)->GetValue();
+  // CLog::Log(LOGERROR, "CSettingsManager::GetBool({}) = {}", id, result);
+  return result;
 }
 
 bool CSettingsManager::SetBool(const std::string &id, bool value)
@@ -708,6 +712,8 @@ void CSettingsManager::SetDefaults()
 
 void CSettingsManager::AddCondition(const std::string &condition)
 {
+  std::cout << "AddCondition: " << condition << std::endl;
+
   CExclusiveLock lock(m_critical);
   if (condition.empty())
     return;

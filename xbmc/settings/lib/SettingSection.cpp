@@ -145,6 +145,8 @@ SettingList CSettingGroup::GetSettings(SettingLevel level) const
   {
     if (setting->GetLevel() <= level && setting->MeetsRequirements())
       settings.push_back(setting);
+    else if (!setting->MeetsRequirements())
+      CLog::Log(LOGERROR, "Setting {} does NOT meet requirements", setting->GetId());
   }
 
   return settings;
@@ -322,6 +324,8 @@ SettingCategoryList CSettingSection::GetCategories(SettingLevel level) const
   {
     if (category->MeetsRequirements() && category->IsVisible() && category->GetGroups(level).size() > 0)
       categories.push_back(category);
+    else
+      CLog::Log(LOGERROR, "Category {} does NOT meet requirements or is not visible or has no groups", category->GetId());
   }
 
   return categories;
