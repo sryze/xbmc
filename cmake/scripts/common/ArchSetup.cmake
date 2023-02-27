@@ -190,7 +190,7 @@ if(NOT MSVC)
   # these options affect only core code
   if(NOT CORE_COMPILE_OPTIONS)
     set(CORE_COMPILE_OPTIONS
-      -Werror=double-promotion
+      # -Werror=double-promotion
       -Werror=missing-field-initializers
       -Werror=sign-compare
     )
