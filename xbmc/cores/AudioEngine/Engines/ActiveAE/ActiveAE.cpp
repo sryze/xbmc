@@ -2185,7 +2185,7 @@ bool CActiveAE::RunStages()
                 CAEUtil::SSEMulAddArray(dst, src, volume, nb_floats);
                 for (int k = 0; k < nb_floats; ++k)
                 {
-                  if (fabs(dst[k]) > 1.0f)
+                  if (fabs(dst[k]) > 1.0)
                   {
                     needClamp = true;
                     break;
@@ -2195,7 +2195,7 @@ bool CActiveAE::RunStages()
                 for (int k = 0; k < nb_floats; ++k)
                 {
                   dst[k] += src[k] * volume;
-                  if (fabs(dst[k]) > 1.0f)
+                  if (fabs(dst[k]) > 1.0)
                     needClamp = true;
                 }
 #endif
