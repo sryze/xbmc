@@ -229,7 +229,7 @@ std::tuple<uint8_t*, int> GetPacketExtradata(const AVPacket* pkt, const AVCodecP
       continue;
     }
 
-    size_t retExtraDataSize = 0;
+    int retExtraDataSize = 0;
     uint8_t* retExtraData =
         av_packet_get_side_data(pktRef, AV_PKT_DATA_NEW_EXTRADATA, &retExtraDataSize);
     if (retExtraData && retExtraDataSize > 0 && retExtraDataSize < FF_MAX_EXTRADATA_SIZE)
