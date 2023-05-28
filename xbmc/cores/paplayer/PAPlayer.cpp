@@ -495,7 +495,7 @@ inline bool PAPlayer::PrepareStream(StreamInfo *si)
     si->m_stream->SetReplayGain(gain);
   else if (CServiceBroker::GetSettingsComponent()->GetSettings()->GetBool(CSettings::SETTING_MUSICPLAYER_REPLAYGAINAVOIDCLIPPING))
     // Normalise volume reducing replaygain to avoid needing clipping protection, plays file at lower level
-    si->m_stream->SetReplayGain(1.0f / (float)fabs(peak));
+    si->m_stream->SetReplayGain(1.0f / fabs(peak));
   else
     // Clipping protection (when enabled in AE) by audio limiting, applied just where needed
     si->m_stream->SetAmplification(gain);

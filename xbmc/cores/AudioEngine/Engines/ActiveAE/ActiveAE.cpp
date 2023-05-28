@@ -2222,7 +2222,7 @@ bool CActiveAE::RunStages()
                 for (int k = 0; k < nb_floats; ++k)
                 {
                   dst[k] += src[k] * volume;
-                  if (fabs(dst[k]) > 1.0)
+                  if (fabs(dst[k]) > 1.0f)
                     needClamp = true;
                 }
 #endif
